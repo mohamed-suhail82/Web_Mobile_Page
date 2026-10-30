@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mobi X Mart — Coimbatore</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+/* ============ TOKENS ============ */
+:root{
+  --ink:#080a10;
+  --surface:#12161f;
+  --surface-2:#181d29;
+  --line: rgba(255,255,255,0.08);
+  --teal:#48e0d2;
+  --violet:#8b6bff;
+  --amber:#ffb84d;
+  --text:#eef1f6;
+  --text-dim:#8993a6;
+  --text-faint:#5b6478;
+  --radius: 18px;
+  --font-display:'Sora', sans-serif;
+  --font-body:'Inter', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+
+*{box-sizing:border-box; margin:0; padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--ink);
+  color:var(--text);
+  font-family:var(--font-body);
+  line-height:1.5;
+  overflow-x:hidden;
+}
+img{width:100%; height:100%; object-fit:cover; display:block;}
+a{color:inherit; text-decoration:none;}
+ul{list-style:none;}
+section{position:relative;}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; scroll-behavior:auto !important;}
+}
+
+::selection{background:var(--teal); color:var(--ink);}
+
+/* subtle grain / crack-glow background layer */
+.bg-glow{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+  background:
+    radial-gradient(700px circle at 15% 8%, rgba(139,107,255,0.16), transparent 60%),
+    radial-gradient(900px circle at 85% 25%, rgba(72,224,210,0.10), transparent 55%);
+}
+
+.wrap{
+  max-width:1180px;
+  margin:0 auto;
+  padding:0 24px;
+}
+
+.eyebrow{
+  font-family:var(--font-mono);
+  font-size:12px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--teal);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.eyebrow::before{
+  content:'';
+  width:14px; height:1px;
+  background:var(--teal);
+  display:inline-block;
+}
+
+h1,h2,h3{font-family:var(--font-display); letter-spacing:-0.01em;}
+
+/* ============ CRACK DIVIDER (signature element) ============ */
+.crack-divider{
+  position:relative;
+  height:64px;
+  width:100%;
+  overflow:hidden;
+}
+.crack-divider svg{position:absolute; top:0; left:50%; transform:translateX(-50%); width:100%; max-width:1400px; height:100%; opacity:0.55;}
+.crack-divider path{stroke:url(#crackGrad); stroke-width:1; fill:none;}
+
+/* ============ NAVBAR ============ */
+.navbar{
+  position:sticky; top:0; z-index:100;
+  backdrop-filter:blur(16px) saturate(140%);
+  -webkit-backdrop-filter:blur(16px) saturate(140%);
+  background:rgba(8,10,16,0.72);
+  border-bottom:1px solid var(--line);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:16px 24px;
+  max-width:1180px; margin:0 auto;
+  gap:20px;
+}
+.brand{
+  display:flex; align-items:center; gap:10px;
+  white-space:nowrap;
+}
+.footer-brand .brand-logo{height:30px;}
+.nav-links{
+  display:flex; gap:4px; flex-wrap:wrap; overflow-x:auto;
+  scrollbar-width:none;
+}
+.nav-links::-webkit-scrollbar{display:none;}
+.nav-links a{
+  font-size:13.5px; font-weight:500; color:var(--text-dim);
+  padding:9px 14px; border-radius:999px;
+  white-space:nowrap;
+  transition:all .25s ease;
+}
+.nav-links a:hover{color:var(--ink); background:var(--teal);}
+.nav-toggle{display:none; background:none; border:none; color:var(--text); font-size:22px; cursor:pointer;}
+
+.brand-logo{height:60px; width:auto; object-fit:contain; flex-shrink:0;}
+
+.nav-actions{display:flex; align-items:center; gap:6px;}
+.search-btn{
+  background:none; border:1px solid var(--line); color:var(--text-dim);
+  width:38px; height:38px; border-radius:50%;
+  display:flex; align-items:center; justify-content:center;
+  cursor:pointer; transition:all .25s ease; flex-shrink:0;
+}
+.search-btn:hover{color:var(--ink); background:var(--teal); border-color:var(--teal);}
+.search-btn svg{width:16px; height:16px;}
+
+.search-overlay{
+  position:fixed; inset:0; z-index:200;
+  background:rgba(4,5,9,0.75);
+  backdrop-filter:blur(6px);
+  display:flex; align-items:flex-start; justify-content:center;
+  padding:90px 20px 0;
+  opacity:0; pointer-events:none;
+  transition:opacity .25s ease;
+}
+.search-overlay.open{opacity:1; pointer-events:auto;}
+.search-box{
+  width:100%; max-width:640px;
+  background:var(--surface); border:1px solid var(--line);
+  border-radius:16px; padding:8px;
+  box-shadow:0 24px 60px rgba(0,0,0,0.5);
+  transform:translateY(-14px);
+  transition:transform .3s ease;
+}
+.search-overlay.open .search-box{transform:translateY(0);}
+.search-row{display:flex; align-items:center; gap:10px; padding:8px 10px;}
+.search-row svg{width:18px; height:18px; color:var(--text-faint); flex-shrink:0;}
+.search-row input{
+  flex:1; background:none; border:none; outline:none;
+  color:var(--text); font-family:var(--font-body); font-size:16px;
+}
+.search-row input::placeholder{color:var(--text-faint);}
+.search-close{
+  background:none; border:none; color:var(--text-faint); cursor:pointer;
+  font-size:20px; line-height:1; padding:4px;
+}
+.search-results{
+  max-height:60vh; overflow-y:auto;
+  border-top:1px solid var(--line); margin-top:6px; padding-top:6px;
+  display:flex; flex-direction:column; gap:2px;
+}
+.search-result{
+  display:flex; align-items:center; justify-content:space-between; gap:12px;
+  padding:12px 14px; border-radius:10px;
+  transition:background .2s ease; cursor:pointer;
+}
+.search-result:hover{background:var(--surface-2);}
+.search-result .sr-name{font-size:14px; font-weight:500;}
+.search-result .sr-cat{font-size:11px; color:var(--text-faint); font-family:var(--font-mono);}
+.search-result .sr-price{font-family:var(--font-mono); color:var(--teal); font-size:13px; flex-shrink:0;}
+.search-empty{padding:24px 14px; text-align:center; color:var(--text-faint); font-size:13.5px;}
+.search-hint{padding:10px 14px 4px; color:var(--text-faint); font-size:12px;}
+
+@media (max-width:560px){
+  .search-overlay{padding-top:70px;}
+}
+
+@media (max-width: 980px){
+  .nav-links{
+    display:none;
+    position:absolute; top:100%; left:0; right:0;
+    background:var(--surface); flex-direction:column; padding:10px;
+    border-bottom:1px solid var(--line);
+    max-height:70vh; overflow-y:auto;
+  }
+  .nav-links.open{display:flex;}
+  .nav-links a{padding:12px 16px; border-radius:10px;}
+  .nav-toggle{display:block;}
+}
+
+/* ============ HERO ============ */
+.hero{
+  padding:110px 24px 90px;
+  position:relative;
+  z-index:1;
+}
+.hero-inner{
+  max-width:1200px; margin:0 auto;
+  display:grid; grid-template-columns:1.1fr 0.9fr; gap:80px;
+  align-items:center;
+}
+.offer-pill{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-mono); font-size:12px; letter-spacing:0.05em;
+  background:linear-gradient(90deg, rgba(255,184,77,0.16), rgba(255,184,77,0.04));
+  border:1px solid rgba(255,184,77,0.35);
+  color:var(--amber);
+  padding:8px 16px; border-radius:999px;
+  margin-bottom:24px;
+  animation:pulseGlow 2.6s ease-in-out infinite;
+}
+@keyframes pulseGlow{
+  0%,100%{box-shadow:0 0 0px rgba(255,184,77,0);}
+  50%{box-shadow:0 0 18px rgba(255,184,77,0.35);}
+}
+.offer-pill .live-dot{width:6px; height:6px; border-radius:50%; background:var(--amber);}
+
+.hero h1{
+  font-size:clamp(2.4rem, 5vw, 3.6rem);
+  font-weight:700;
+  line-height:1.08;
+  margin-bottom:20px;
+}
+.hero h1 .accent{
+  background:linear-gradient(90deg, var(--teal), var(--violet));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.hero p.lede{
+  font-size:16.5px; color:var(--text-dim); max-width:480px; margin-bottom:34px;
+}
+.hero-ctas{display:flex; gap:14px; flex-wrap:wrap;}
+
+.btn{
+  display:inline-flex; align-items:center; gap:8px;
+  font-family:var(--font-body); font-weight:600; font-size:14.5px;
+  padding:14px 24px; border-radius:12px;
+  cursor:pointer; border:1px solid transparent;
+  transition:transform .25s cubic-bezier(.2,.8,.2,1), box-shadow .25s ease, background .25s ease;
+}
+.btn-primary{
+  background:linear-gradient(90deg, var(--teal), #37c9bc);
+  color:var(--ink);
+}
+.btn-primary:hover{transform:translateY(-3px); box-shadow:0 12px 28px rgba(72,224,210,0.28);}
+.btn-ghost{
+  background:transparent; border:1px solid var(--line); color:var(--text);
+}
+.btn-ghost:hover{background:var(--surface-2); transform:translateY(-3px);}
+
+.hero-visual{
+  position:relative;
+  aspect-ratio:1/1.05;
+  border-radius:28px;
+  background:linear-gradient(160deg, var(--surface), var(--surface-2));
+  border:1px solid var(--line);
+  overflow:hidden;
+  display:flex; align-items:center; justify-content:center;
+}
+.hero-visual .placeholder-img{width:100%; height:100%; background:linear-gradient(160deg, #161c28, #0d1119);}
+.hero-visual::after{
+  content:'';
+  position:absolute; inset:0;
+  background:radial-gradient(circle at 30% 20%, rgba(139,107,255,0.25), transparent 60%);
+  mix-blend-mode:screen;
+}
+.hero-stats{
+  position:absolute; bottom:18px; left:18px; right:18px;
+  display:flex; justify-content:space-between; gap:10px;
+  z-index:2;
+}
+.stat-chip{
+  background:rgba(8,10,16,0.75);
+  backdrop-filter:blur(10px);
+  border:1px solid var(--line);
+  border-radius:12px;
+  padding:10px 14px;
+  font-family:var(--font-mono); font-size:11px; color:var(--text-dim);
+  flex:1;
+}
+.stat-chip b{display:block; font-size:15px; color:var(--text); font-family:var(--font-display);}
+
+/* ============ SECTION HEADERS ============ */
+.section{padding:80px 24px; position:relative; z-index:1;}
+.section-head{margin-bottom:44px; max-width:640px;}
+.section-head h2{font-size:clamp(1.7rem, 3.4vw, 2.3rem); font-weight:700; margin:14px 0 10px;}
+.section-head p{color:var(--text-dim); font-size:15px;}
+.section-price-tag{
+  font-family:var(--font-mono); font-size:12.5px; color:var(--amber);
+  border:1px solid rgba(255,184,77,0.3); background:rgba(255,184,77,0.06);
+  padding:4px 12px; border-radius:999px; display:inline-block; margin-top:12px;
+}
+
+.alt-bg{background:linear-gradient(180deg, rgba(255,255,255,0.015), transparent);}
+
+/* ============ PRODUCT GRID / CARDS ============ */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill, minmax(260px, 1fr));
+  gap:22px;
+}
+.card{
+  background:var(--surface);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  overflow:hidden;
+  display:flex; flex-direction:column;
+  position:relative;
+  transition:transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease;
+}
+.card::before{
+  content:'';
+  position:absolute; inset:0; border-radius:var(--radius); padding:1px;
+  background:linear-gradient(135deg, var(--teal), var(--violet));
+  opacity:0; transition:opacity .35s ease;
+  -webkit-mask:linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite:xor; mask-composite:exclude;
+  pointer-events:none;
+}
+.card:hover{transform:translateY(-6px); box-shadow:0 20px 40px rgba(0,0,0,0.35);}
+.card:hover::before{opacity:1;}
+
+.card-img{
+  aspect-ratio:4/3;
+  background:linear-gradient(160deg, #161c28, #0d1119);
+  position:relative;
+}
+.card-img::after{
+  content:'';
+  position:absolute; inset:0;
+  background:linear-gradient(160deg, rgba(72,224,210,0.06), rgba(139,107,255,0.05));
+}
+.card-body{padding:20px; display:flex; flex-direction:column; gap:10px; flex:1;}
+.card-body h3{font-size:16.5px; font-weight:600;}
+.card-body ul{display:flex; flex-direction:column; gap:5px; margin:2px 0 6px;}
+.card-body ul li{
+  font-size:12.5px; color:var(--text-dim); position:relative; padding-left:14px;
+}
+.card-body ul li::before{content:'—'; position:absolute; left:0; color:var(--text-faint);}
+.card-footer{
+  margin-top:auto; display:flex; align-items:center; justify-content:space-between; gap:10px; padding-top:8px;
+}
+.price{font-family:var(--font-mono); font-weight:700; font-size:17px; color:var(--teal);}
+.price small{display:block; font-family:var(--font-body); font-weight:400; font-size:10.5px; color:var(--text-faint); text-transform:uppercase; letter-spacing:.05em;}
+.order-btn{
+  display:inline-flex; align-items:center; gap:6px;
+  font-size:12.5px; font-weight:600;
+  background:var(--surface-2); border:1px solid var(--line); color:var(--text);
+  padding:9px 14px; border-radius:10px;
+  transition:all .25s ease;
+  white-space:nowrap;
+}
+.order-btn:hover{background:#25D366; border-color:#25D366; color:#06210f; transform:translateY(-2px);}
+.order-btn svg{width:14px; height:14px; flex-shrink:0;}
+
+.badge-warranty{
+  position:absolute; top:14px; right:14px; z-index:2;
+  font-family:var(--font-mono); font-size:10px; letter-spacing:.04em;
+  background:rgba(8,10,16,0.75); backdrop-filter:blur(6px);
+  border:1px solid rgba(72,224,210,0.4); color:var(--teal);
+  padding:4px 9px; border-radius:999px;
+}
+
+/* service cards */
+.service-card{
+  background:var(--surface); border:1px solid var(--line); border-radius:var(--radius);
+  padding:26px; display:flex; flex-direction:column; gap:12px;
+  transition:transform .3s ease, border-color .3s ease;
+}
+.service-card:hover{transform:translateY(-5px); border-color:rgba(139,107,255,0.4);}
+.service-card h3{font-size:17px; font-weight:600;}
+.service-card ul{display:flex; flex-direction:column; gap:5px; margin:2px 0 10px;}
+.service-card ul li{font-size:12.5px; color:var(--text-dim); padding-left:14px; position:relative;}
+.service-card ul li::before{content:'✓'; position:absolute; left:0; color:var(--teal); font-size:11px;}
+.service-card .card-footer{margin-top:auto;}
+
+/* soon panel */
+.soon-panel{
+  border:1px dashed var(--line);
+  border-radius:var(--radius);
+  padding:60px 30px;
+  text-align:center;
+  color:var(--text-dim);
+  background:radial-gradient(circle at 50% 0%, rgba(139,107,255,0.06), transparent 70%);
+}
+.soon-panel h3{font-family:var(--font-display); font-size:20px; color:var(--text); margin-bottom:8px;}
+.soon-panel .glow-dot{
+  width:8px; height:8px; border-radius:50%; background:var(--teal); margin:0 auto 18px;
+  box-shadow:0 0 16px rgba(72,224,210,0.7);
+  animation:pulseGlow2 1.8s ease-in-out infinite;
+}
+@keyframes pulseGlow2{0%,100%{opacity:0.4;}50%{opacity:1;}}
+
+.subgrid-label{
+  font-family:var(--font-mono); font-size:12px; color:var(--text-faint);
+  text-transform:uppercase; letter-spacing:.08em;
+  margin:34px 0 16px;
+  padding-bottom:8px; border-bottom:1px solid var(--line);
+}
+.subgrid-label:first-of-type{margin-top:0;}
+
+/* ============ FOOTER ============ */
+footer{
+  background:var(--surface);
+  border-top:1px solid var(--line);
+  padding:60px 24px 30px;
+  position:relative; z-index:1;
+}
+.footer-grid{
+  display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:40px;
+  max-width:1180px; margin:0 auto;
+}
+.footer-grid h4{font-family:var(--font-display); font-size:15px; margin-bottom:16px; color:var(--text);}
+.footer-grid p, .footer-grid a{font-size:13.5px; color:var(--text-dim); line-height:1.8;}
+.footer-grid a:hover{color:var(--teal);}
+.footer-brand{display:flex; align-items:center; gap:10px; font-family:var(--font-display); font-weight:700; font-size:18px; margin-bottom:12px;}
+.footer-bottom{
+  max-width:1180px; margin:40px auto 0; padding-top:24px;
+  border-top:1px solid var(--line);
+  display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+  font-size:12.5px; color:var(--text-faint);
+}
+.feedback-link{
+  display:inline-flex; align-items:center; gap:6px;
+  color:var(--amber) !important; font-weight:600;
+}
+
+@media (max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-visual{order:-1; max-width:420px; margin:0 auto; width:100%;}
+  .footer-grid{grid-template-columns:1fr; gap:28px;}
+}
+</style>
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<!-- ============ NAVBAR ============ -->
+<nav class="navbar">
+  <div class="nav-inner">
+    <a href="#home" class="brand"><img class="brand-logo" src="image/logo.png" alt="Mobi X Mart logo"></a>
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">☰</button>
+    <div class="nav-links" id="navLinks">
+      <a href="#home">Home</a>
+      <a href="#temper-glass">Temper Glass</a>
+      <a href="#back-case">Back Case</a>
+      <a href="#chargers">Chargers</a>
+      <a href="#audio">Headphones & Airpods</a>
+      <a href="#mobiles">New & Second Hand</a>
+      <a href="#mobile-service">Mobiles Service</a>
+      <a href="#laptop-service">Laptop Service</a>
+      <a href="#other">Other Accessories</a>
+    </div>
+    <div class="nav-actions">
+      <button class="search-btn" id="searchToggle" aria-label="Search products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<div class="search-overlay" id="searchOverlay">
+  <div class="search-box">
+    <div class="search-row">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="searchInput" placeholder="Search glass, cases, chargers, service...">
+      <button class="search-close" id="searchClose" aria-label="Close search">✕</button>
+    </div>
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="home">
+  <div class="hero-inner">
+    <div>
+      <div class="offer-pill"><span class="live-dot"></span> LIMITED OFFER — Temper Glass starts at ₹99</div>
+      <h1>Your phone's <span class="accent">next upgrade</span> starts here.</h1>
+      <p class="lede">Glass, cases, chargers, audio & genuine repairs — all under one roof in Coimbatore. Order in seconds, straight to WhatsApp.</p>
+      <div class="hero-ctas">
+        <a class="btn btn-primary" href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20know%20more%20about%20Mobi%20X%20Mart" target="_blank">Chat on WhatsApp</a>
+        <a class="btn btn-ghost" href="#mobile-service">Book a Repair</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <img class="placeholder-img" src="image/ffff.jpeg" alt="Mobi X Mart storefront">
+      <div class="hero-stats">
+        <div class="stat-chip"><b>Coimbatore</b>Local delivery only</div>
+        <div class="stat-chip"><b>Warranty</b>On chargers & audio</div>
+        <div class="stat-chip"><b>Free Pickup</b>On device service</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="crack-divider">
+  <svg viewBox="0 0 1400 64" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="crackGrad" x1="0" y1="0" x2="1" y2="0">
+        <stop offset="0%" stop-color="#48e0d2" stop-opacity="0"/>
+        <stop offset="50%" stop-color="#8b6bff" stop-opacity="0.8"/>
+        <stop offset="100%" stop-color="#48e0d2" stop-opacity="0"/>
+      </linearGradient>
+    </defs>
+    <path d="M0,32 L180,32 L210,10 L245,50 L280,32 L520,32 L555,54 L590,18 L625,32 L860,32 L895,8 L930,32 L1160,32 L1195,50 L1230,20 L1400,32"/>
+  </svg>
+</div>
+
+<!-- ============ TEMPER GLASS ============ -->
+<section class="section" id="temper-glass">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Screen Protection</span>
+      <h2>Temper Glass</h2>
+      <p>Precision-cut protection for every display, from everyday clarity to curved-edge premium builds.</p>
+      <span class="section-price-tag">Starts from ₹99</span>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-img"><img src="image/temp.jpeg" alt="Clear Temper Glass"></div>
+        <div class="card-body">
+          <h3>Clear Temper Glass</h3>
+          <ul><li>High-transparency finish</li><li>Anti-scratch surface</li><li>Fits most phone models</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Clear%20Temper%20Glass" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/matte.jpeg" alt="Matte Temper Glass"></div>
+        <div class="card-body">
+          <h3>Matte Temper Glass</h3>
+          <ul><li>Anti-glare, fingerprint resistant</li><li>Smooth writing feel</li><li>Sweat & smudge proof</li></ul>
+          <div class="card-footer">
+            <div class="price">₹150<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Matte%20Temper%20Glass" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/pri.jpeg" alt="Privacy Temper Glass"></div>
+        <div class="card-body">
+          <h3>Privacy Temper Glass</h3>
+          <ul><li>Side-view screen blackout</li><li>Keeps your screen confidential</li><li>Standard clarity head-on</li></ul>
+          <div class="card-footer">
+            <div class="price">₹200<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Privacy%20Temper%20Glass" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/uv.jpeg" alt="UV Temper Glass Curved display"></div>
+        <div class="card-body">
+          <h3>UV Temper Glass <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Curved display)</span></h3>
+          <ul><li>Full edge-to-edge coverage</li><li>UV-cured adhesive bond</li><li>Best for curved-edge phones</li></ul>
+          <div class="card-footer">
+            <div class="price">₹400<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20UV%20Temper%20Glass%20(Curved%20display)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/full.jpeg" alt="Full Glue Temper Glass Curved display"></div>
+        <div class="card-body">
+          <h3>Full Glue Temper Glass <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Curved display)</span></h3>
+          <ul><li>Complete surface adhesive</li><li>No air-gap, premium finish</li><li>Best-in-class impact protection</li></ul>
+          <div class="card-footer">
+            <div class="price">₹500<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Full%20Glue%20Temper%20Glass%20(Curved%20display)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ BACK CASE ============ -->
+<section class="section alt-bg" id="back-case">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Everyday Armor</span>
+      <h2>Back Case</h2>
+      <p>Style-forward, drop-friendly cases built for how you actually use your phone.</p>
+      <span class="section-price-tag">Starts from ₹99</span>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <div class="card-img"><img src="image/ip.jpeg" alt="Transparent Back Case"></div>
+        <div class="card-body">
+          <h3>Transparent Back Case</h3>
+          <ul><li>Shows off your phone's original look</li><li>Shock-absorbing edges</li><li>Slim, lightweight fit</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Transparent%20Back%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/black.jpeg" alt="Flip Phone Case"></div>
+        <div class="card-body">
+          <h3>Silicon Phone Case</h3>
+          <ul><li>Full front + back coverage</li><li>Card slot storage</li><li>Magnetic snap closure</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Flip%20Phone%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/tp.jpeg" alt="TP Case"></div>
+        <div class="card-body">
+          <h3>TP Case</h3>
+          <ul><li>Soft-touch TPU build</li><li>Flexible & tear-resistant</li><li>Precise button cutouts</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20TP%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/dia.jpeg" alt="Diamond Design Case"></div>
+        <div class="card-body">
+          <h3>Diamond Design Case</h3>
+          <ul><li>Faceted diamond-cut pattern</li><li>Sparkle finish, premium look</li><li>Sturdy corner protection</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Diamond%20Design%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/so.jpeg" alt="So Cool Phone Case"></div>
+        <div class="card-body">
+          <h3>So Cool Phone Case</h3>
+          <ul><li>Trendy prints & finishes</li><li>Matte anti-slip grip</li><li>Everyday casual style</li></ul>
+          <div class="card-footer">
+            <div class="price">₹99<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20So%20Cool%20Phone%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-img"><img src="image/flip.jpeg" alt="Flip Phone Case"></div>
+        <div class="card-body">
+          <h3>Flip Phone Case</h3>
+          <ul><li>Full front + back coverage</li><li>Card slot storage</li><li>Magnetic snap closure</li></ul>
+          <div class="card-footer">
+            <div class="price">₹200<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Flip%20Phone%20Case" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ CHARGERS ============ -->
+<section class="section" id="chargers">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Power, Certified</span>
+      <h2>Chargers</h2>
+      <p>Fast-charging bricks for every brand — every unit backed by warranty.</p>
+      <span class="section-price-tag">Starts from ₹179</span>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/c.jpeg" alt="Normal 12W Charger Type-C"></div>
+        <div class="card-body">
+          <h3>Normal 12W Charger <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Type-C)</span></h3>
+          <ul><li>Reliable daily charging</li><li>Type-C connector</li><li>Compact travel-friendly design</li></ul>
+          <div class="card-footer">
+            <div class="price">₹199<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Normal%2012W%20Charger%20(Type-C)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/v8.jpeg" alt="Normal 12W Charger Micro USB"></div>
+        <div class="card-body">
+          <h3>Normal 12W Charger <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Micro USB)</span></h3>
+          <ul><li>Reliable daily charging</li><li>Micro USB connector</li><li>Great for older devices</li></ul>
+          <div class="card-footer">
+            <div class="price">₹179<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Normal%2012W%20Charger%20(Micro%20USB)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/iphone.jpeg" alt="Apple 20W Charger Original"></div>
+        <div class="card-body">
+          <h3>Apple 20W Charger <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Original)</span></h3>
+          <ul><li>Genuine Apple fast charger</li><li>USB-C power delivery</li><li>Optimised for iPhone charging</li></ul>
+          <div class="card-footer">
+            <div class="price">₹1699<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Apple%2020W%20Charger%20(Original)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/sam.jpeg" alt="Samsung 25W Charger Original"></div>
+        <div class="card-body">
+          <h3>Samsung 25W Charger <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Original)</span></h3>
+          <ul><li>Genuine Samsung super-fast charging</li><li>USB-C power delivery</li><li>Safe voltage regulation</li></ul>
+          <div class="card-footer">
+            <div class="price">₹1119<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Samsung%2025W%20Charger%20(Original)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/44.jpeg" alt="Vivo 44W Charger"></div>
+        <div class="card-body">
+          <h3>Vivo 44W Charger</h3>
+          <ul><li>FlashCharge compatible</li><li>Rapid top-up speed</li><li>Built-in safety protection</li></ul>
+          <div class="card-footer">
+            <div class="price">₹1120<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Vivo%2044W%20Charger" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/45w.jpeg" alt="Oppo 45W Charger"></div>
+        <div class="card-body">
+          <h3>Oppo 45W Charger</h3>
+          <ul><li>SuperVOOC fast charging</li><li>Heat-safe housing</li><li>Durable braided-ready cable port</li></ul>
+          <div class="card-footer">
+            <div class="price">₹860<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Oppo%2045W%20Charger" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ HEADPHONES & AIRPODS ============ -->
+<section class="section alt-bg" id="audio">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Sound, Untangled</span>
+      <h2>Headphones & Airpods</h2>
+      <p>Wired and wireless audio for every budget — all with warranty.</p>
+      <span class="section-price-tag">Starts from ₹129</span>
+    </div>
+    <div class="grid">
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/1.jpeg" alt="BOAT-PLUS311 Bluetooth Airpods"></div>
+        <div class="card-body">
+          <h3>BOAT-PLUS311 <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(Bluetooth Airpods)</span></h3>
+          <ul><li>True wireless freedom</li><li>Compact charging case</li><li>Punchy bass tuning</li></ul>
+          <div class="card-footer">
+            <div class="price">₹899<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-PLUS311%20Bluetooth%20Airpods" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/2.jpeg" alt="BOAT-701ANC Bluetooth"></div>
+        <div class="card-body">
+          <h3>BOAT-701ANC <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(BT)</span></h3>
+          <ul><li>Active noise cancellation</li><li>Extended battery backup</li><li>Over-ear comfort fit</li></ul>
+          <div class="card-footer">
+            <div class="price">₹1790<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-701ANC%20(BT)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/3.jpeg" alt="BOAT-213 Bluetooth"></div>
+        <div class="card-body">
+          <h3>BOAT-213 Bluetooth</h3>
+          <ul><li>Lightweight neckband design</li><li>Magnetic earbuds</li><li>Long standby battery</li></ul>
+          <div class="card-footer">
+            <div class="price">₹900<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-213%20Bluetooth" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/9.jpeg" alt="BOAT-148GEN2 Bluetooth"></div>
+        <div class="card-body">
+          <h3>BOAT-148GEN2 <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(BT)</span></h3>
+          <ul><li>Neckband with IPX water resistance</li><li>Fast pairing</li><li>Clear call quality</li></ul>
+          <div class="card-footer">
+            <div class="price">₹900<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-148GEN2%20(BT)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/8.jpeg" alt="BOAT-115 Bluetooth"></div>
+        <div class="card-body">
+          <h3>BOAT-115 Bluetooth</h3>
+          <ul><li>Budget-friendly neckband</li><li>Tangle-free cable</li><li>Solid everyday sound</li></ul>
+          <div class="card-footer">
+            <div class="price">₹700<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-115%20Bluetooth" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/5.jpeg" alt="BOAT-121 Pro Plus Bluetooth"></div>
+        <div class="card-body">
+          <h3>BOAT-121 Pro Plus Bluetooth</h3>
+          <ul><li>Enhanced bass drivers</li><li>Ergonomic ear-hook fit</li><li>Sweat-resistant build</li></ul>
+          <div class="card-footer">
+            <div class="price">₹1150<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20BOAT-121%20Pro%20Plus%20Bluetooth" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/6.jpeg" alt="KDM Earphone wired"></div>
+        <div class="card-body">
+          <h3>KDM Earphone <span style="color:var(--text-faint); font-weight:400; font-size:12px;">(3.5mm, wired)</span></h3>
+          <ul><li>Reliable wired connection</li><li>In-line mic & controls</li><li>Budget everyday pick</li></ul>
+          <div class="card-footer">
+            <div class="price">₹129<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20KDM%20Earphone%20(3.5mm%2C%20wired)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <span class="badge-warranty">Warranty</span>
+        <div class="card-img"><img src="image/7.jpeg" alt="Sault Type-C Earphone"></div>
+        <div class="card-body">
+          <h3>Sault Type-C Earphone</h3>
+          <ul><li>Digital Type-C connection</li><li>Crisp, balanced sound</li><li>Compact and durable</li></ul>
+          <div class="card-footer">
+            <div class="price">₹179<small>per unit</small></div>
+            <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Sault%20Type-C%20Earphone" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+
+<!-- ============ MOBILES SERVICE ============ -->
+<section class="section alt-bg" id="mobile-service">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Repairs, Done Right</span>
+      <h2>Mobiles Service</h2>
+      <p>Genuine parts, transparent pricing, and pickup from your doorstep.</p>
+    </div>
+    <div class="grid">
+
+      <div class="service-card">
+        <h3>Mobile Display Replacement</h3>
+        <ul>
+          <li>Free pickup & delivery</li>
+          <li>Free temper glass included</li>
+          <li>Free back case included</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price">₹1499<small>starting</small></div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Mobile%20Display%20Replacement" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <h3>Battery Replacement</h3>
+        <ul>
+          <li>6 months warranty</li>
+          <li>Free pickup & delivery</li>
+          <li>Free temper glass & back case</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price">₹799<small>starting</small></div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20Battery%20Replacement" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <h3>Other Board Complaint</h3>
+        <ul>
+          <li>Diagnostics for motherboard issues</li>
+          <li>Component-level repair</li>
+          <li>Pricing depends on the issue</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price" style="font-size:14px;">Contact for pricing</div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20ask%20about%20Other%20Board%20Complaint%20(Mobile)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Ask</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ LAPTOP SERVICE ============ -->
+<section class="section" id="laptop-service">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Keep It Running</span>
+      <h2>Laptop Service</h2>
+      <p>From fresh installs to hardware upgrades and board-level fixes.</p>
+    </div>
+    <div class="grid">
+
+      <div class="service-card">
+        <h3>OS Installation</h3>
+        <ul>
+          <li>Free pickup & delivery</li>
+          <li>Clean, licensed setup</li>
+          <li>Driver installation included</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price">₹299<small>starting</small></div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20OS%20Installation" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Order</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <h3>RAM Upgrade</h3>
+        <ul>
+          <li>Speed boost for multitasking</li>
+          <li>Compatible module sourcing</li>
+          <li>Pricing depends on capacity</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price" style="font-size:14px;">Contact for pricing</div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20ask%20about%20RAM%20Upgrade" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Ask</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <h3>SSD & Storage Upgrade</h3>
+        <ul>
+          <li>Faster boot & load times</li>
+          <li>Data migration support</li>
+          <li>Pricing depends on capacity</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price" style="font-size:14px;">Contact for pricing</div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20ask%20about%20SSD%20%26%20Storage%20Upgrade" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Ask</a>
+        </div>
+      </div>
+
+      <div class="service-card">
+        <h3>Other Board Complaint</h3>
+        <ul>
+          <li>Motherboard diagnostics</li>
+          <li>Component-level repair</li>
+          <li>Pricing depends on the issue</li>
+        </ul>
+        <div class="card-footer">
+          <div class="price" style="font-size:14px;">Contact for pricing</div>
+          <a class="order-btn" href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20ask%20about%20Other%20Board%20Complaint%20(Laptop)" target="_blank"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12c0 1.85.5 3.58 1.36 5.07L2 22l5.07-1.36A9.94 9.94 0 0012 22c5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>Ask</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ============ NEW & SECOND HAND MOBILES ============ -->
+<section class="section" id="mobiles">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Buy a Phone</span>
+      <h2>New & Second Hand Mobiles</h2>
+      <p>Smart and keypad phones — new and quality-checked pre-owned units.</p>
+    </div>
+
+    <div class="subgrid-label">Smart Mobiles</div>
+    <div class="soon-panel">
+      <div class="glow-dot"></div>
+      <h3>More Products Coming Soon</h3>
+      <p>We're stocking up. Message us on WhatsApp to check current availability.</p>
+    </div>
+
+    <div class="subgrid-label">Keypad Mobiles</div>
+    <div class="soon-panel">
+      <div class="glow-dot"></div>
+      <h3>More Products Coming Soon</h3>
+      <p>We're stocking up. Message us on WhatsApp to check current availability.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ OTHER ACCESSORIES ============ -->
+<section class="section alt-bg" id="other">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Extras</span>
+      <h2>Other Accessories</h2>
+      <p>New additions to the Mobi X Mart lineup.</p>
+    </div>
+    <div class="soon-panel">
+      <div class="glow-dot"></div>
+      <h3>Coming Soon</h3>
+      <p>We're adding more accessories here shortly. Reach out on WhatsApp for anything specific you need.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOOTER ============ -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand"><img class="brand-logo" src="/image/logo.png" alt="Mobi X Mart logo"></div>
+      <p>Mobile Accessories & Service Shop, based in Coimbatore.<br>Built by Suhail.</p>
+      <p style="margin-top:14px;">Delivery available only within Coimbatore.</p>
+    </div>
+    <div>
+      <h4>Contact</h4>
+      <p>📞 <a href="tel:+916374109743">6374109743</a></p>
+      <p>✉️ <a href="mailto:mobisuhail82@gmail.com">mobisuhail82@gmail.com</a></p>
+      <p><a href="https://wa.me/916374109743?text=Hello%20I%20want%20to%20know%20more%20about%20Mobi%20X%20Mart" target="_blank">Chat on WhatsApp</a></p>
+    </div>
+    <div>
+      <h4>Feedback</h4>
+      <p>Tell us how we're doing — it helps us serve Coimbatore better.</p>
+      <p style="margin-top:10px;"><a class="feedback-link" href="https://docs.google.com/forms/d/e/1FAIpQLSdh5LvO8li6iCVokQ5TEwIhSnxasstG7qwAiKdUgOFu5k0gYQ/viewform" target="_blank">Share your feedback →</a></p>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>Thank you for your love & support 💙</span>
+    <span>© Mobi X Mart</span>
+  </div>
+</footer>
+
+<script>
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
+  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
+
+  // ---------- Search ----------
+  const catalog = [
+    {name:"Clear Temper Glass", cat:"Temper Glass", price:"₹99", anchor:"temper-glass"},
+    {name:"Matte Temper Glass", cat:"Temper Glass", price:"₹150", anchor:"temper-glass"},
+    {name:"Privacy Temper Glass", cat:"Temper Glass", price:"₹200", anchor:"temper-glass"},
+    {name:"UV Temper Glass (Curved display)", cat:"Temper Glass", price:"₹400", anchor:"temper-glass"},
+    {name:"Full Glue Temper Glass (Curved display)", cat:"Temper Glass", price:"₹500", anchor:"temper-glass"},
+    {name:"Transparent Back Case", cat:"Back Case", price:"₹99", anchor:"back-case"},
+    {name:"TP Case", cat:"Back Case", price:"₹99", anchor:"back-case"},
+    {name:"Diamond Design Case", cat:"Back Case", price:"₹99", anchor:"back-case"},
+    {name:"So Cool Phone Case", cat:"Back Case", price:"₹99", anchor:"back-case"},
+    {name:"Flip Phone Case", cat:"Back Case", price:"₹200", anchor:"back-case"},
+    {name:"Normal 12W Charger (Type-C)", cat:"Chargers", price:"₹199", anchor:"chargers"},
+    {name:"Normal 12W Charger (Micro USB)", cat:"Chargers", price:"₹179", anchor:"chargers"},
+    {name:"Apple 20W Charger (Original)", cat:"Chargers", price:"₹1699", anchor:"chargers"},
+    {name:"Samsung 25W Charger (Original)", cat:"Chargers", price:"₹1119", anchor:"chargers"},
+    {name:"Vivo 44W Charger", cat:"Chargers", price:"₹1120", anchor:"chargers"},
+    {name:"Oppo 45W Charger", cat:"Chargers", price:"₹860", anchor:"chargers"},
+    {name:"BOAT-PLUS311 Bluetooth Airpods", cat:"Headphones & Airpods", price:"₹899", anchor:"audio"},
+    {name:"BOAT-701ANC (BT)", cat:"Headphones & Airpods", price:"₹1790", anchor:"audio"},
+    {name:"BOAT-213 Bluetooth", cat:"Headphones & Airpods", price:"₹900", anchor:"audio"},
+    {name:"BOAT-148GEN2 (BT)", cat:"Headphones & Airpods", price:"₹900", anchor:"audio"},
+    {name:"BOAT-115 Bluetooth", cat:"Headphones & Airpods", price:"₹700", anchor:"audio"},
+    {name:"BOAT-121 Pro Plus Bluetooth", cat:"Headphones & Airpods", price:"₹1150", anchor:"audio"},
+    {name:"KDM Earphone (3.5mm, wired)", cat:"Headphones & Airpods", price:"₹129", anchor:"audio"},
+    {name:"Sault Type-C Earphone", cat:"Headphones & Airpods", price:"₹179", anchor:"audio"},
+    {name:"Mobile Display Replacement", cat:"Mobiles Service", price:"₹1499", anchor:"mobile-service"},
+    {name:"Battery Replacement", cat:"Mobiles Service", price:"₹799", anchor:"mobile-service"},
+    {name:"Other Board Complaint (Mobile)", cat:"Mobiles Service", price:"Contact", anchor:"mobile-service"},
+    {name:"OS Installation", cat:"Laptop Service", price:"₹299", anchor:"laptop-service"},
+    {name:"RAM Upgrade", cat:"Laptop Service", price:"Contact", anchor:"laptop-service"},
+    {name:"SSD & Storage Upgrade", cat:"Laptop Service", price:"Contact", anchor:"laptop-service"},
+    {name:"Other Board Complaint (Laptop)", cat:"Laptop Service", price:"Contact", anchor:"laptop-service"},
+  ];
+
+  const searchToggle = document.getElementById('searchToggle');
+  const searchOverlay = document.getElementById('searchOverlay');
+  const searchClose = document.getElementById('searchClose');
+  const searchInput = document.getElementById('searchInput');
+  const searchResults = document.getElementById('searchResults');
+
+  function renderResults(query){
+    const q = query.trim().toLowerCase();
+    if(!q){
+      searchResults.innerHTML = '<div class="search-hint">Try “glass”, “charger”, “battery”, “airpods”...</div>';
+      return;
+    }
+    const matches = catalog.filter(item => item.name.toLowerCase().includes(q) || item.cat.toLowerCase().includes(q));
+    if(matches.length === 0){
+      searchResults.innerHTML = '<div class="search-empty">No matches. Try a different keyword, or ask us on WhatsApp.</div>';
+      return;
+    }
+    searchResults.innerHTML = matches.map(item => `
+      <a class="search-result" href="#${item.anchor}" data-anchor="${item.anchor}">
+        <span>
+          <span class="sr-name">${item.name}</span><br>
+          <span class="sr-cat">${item.cat}</span>
+        </span>
+        <span class="sr-price">${item.price}</span>
+      </a>
+    `).join('');
+  }
+
+  function openSearch(){
+    searchOverlay.classList.add('open');
+    renderResults('');
+    setTimeout(() => searchInput.focus(), 150);
+  }
+  function closeSearch(){
+    searchOverlay.classList.remove('open');
+    searchInput.value = '';
+  }
+
+  searchToggle.addEventListener('click', openSearch);
+  searchClose.addEventListener('click', closeSearch);
+  searchOverlay.addEventListener('click', (e) => { if(e.target === searchOverlay) closeSearch(); });
+  searchInput.addEventListener('input', (e) => renderResults(e.target.value));
+  searchResults.addEventListener('click', (e) => {
+    const link = e.target.closest('.search-result');
+    if(link) closeSearch();
+  });
+  document.addEventListener('keydown', (e) => {
+    if(e.key === 'Escape') closeSearch();
+    if((e.ctrlKey || e.metaKey) && e.key === '/') { e.preventDefault(); openSearch(); }
+  });
+</script>
+
+</body>
+</html>
